@@ -3,9 +3,23 @@
 {% block content %}
 <h1>Edit your account</h1>
 <p>You can edit your account using the following form:</p>
+<!--<form action="." method="post" enctype="multipart/form-data">-->
+<!--{{ user_form.as_p }}-->
+<!--{{ profile_form.as_p }}-->
+<!--{% csrf_token %}-->
+<!--<p><input type="submit" value="Save changes"></p>-->
+<!--</form>-->
 <form action="." method="post" enctype="multipart/form-data">
-{{ user_form.as_p }}
-{{ profile_form.as_p }}
+<p><label for="id_first_name">First name:</label> <input type="text" name="first_name" value="g" maxlength="30" id="id_first_name"></p>
+<p><label for="id_last_name">Last name:</label> <input type="text" name="last_name" maxlength="150" id="id_last_name"></p>
+<p><label for="id_email">Email address:</label> <input type="email" name="email" maxlength="254" id="id_email"></p>
+<p><label for="id_date_of_birth">Date of birth:</label> <input type="text" name="date_of_birth" value="2020-04-26" id="id_date_of_birth"></p>
+<p><label for="id_photo">Photo:</label> Currently: <img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" alt=""
+           style="width: 250px;height:250px;">
+<input type="checkbox" name="photo-clear" id="photo-clear_id">
+<label for="photo-clear_id">Clear</label><br>
+Change:
+<input type="file" name="photo" accept="image/*" id="id_photo"></p>
 {% csrf_token %}
 <p><input type="submit" value="Save changes"></p>
 </form>

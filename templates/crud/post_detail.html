@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p class="date">
+{{ post.publish }}
+  author: <a href="{{ post.author.get_absolute_url }}" class="title">
+        {{ post.author }}
+      </a>
+</p>
+{{ post.body|linebreaks }}
+{% endblock %}

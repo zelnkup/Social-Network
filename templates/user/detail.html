@@ -8,5 +8,14 @@ username:{{ user.username }}
 photo:
 <br>
 <img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" alt="" style="width: 300px;height:300px;">
-
+<br>
+<h3>{{ user.username }}'s posts</h3>
+<br>
+{% for post in posts %}
+<a href="{{ post.get_absolute_url }}">
+      {{ post.title }}
+    </a>
+<br>
+{{ post.body|truncatewords:30|linebreaks }}
+{% endfor %}
 {% endblock %}

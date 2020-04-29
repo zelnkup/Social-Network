@@ -4,36 +4,76 @@
   <title>{% block title %}{% endblock %}</title>
   {% block extra_head %}
   {% endblock %}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    /* Style the header */
+    .header {
+      background-color: #f1f1f1;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* Style the top navigation bar */
+    .topnav {
+      overflow: hidden;
+      background-color: #333;
+
+    }
+
+    /* Style the topnav links */
+    .topnav a {
+      float: left;
+      display: block;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    /* Change color on hover */
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+  </style>
 </head>
 <body>
 {% block body %}
 
-{% if messages %}
-<div>
-  <strong>Messages:</strong>
-  <ul>
-    {% for message in messages %}
-    <li>{{message}}</li>
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
 
-<div>
-  <strong>Menu:</strong>
-  <ul>
+<div class="header">
+  {% if messages %}
+    <strong>Messages:</strong>
+      {% for message in messages %}
+  {{message}}
+  <br>
+      {% endfor %}
+  {% endif %}
+  {% if user.is_authenticated %}
+      <h3>whas up {{ request.user.username }}</h3>
+  {% else %}{% endif %}
+</div>
+
+<div class="topnav">
     {% if user.is_authenticated %}
-    <li><a href="/">Dashboard</a></li>
-    <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-    <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-    <li><a href="{% url 'account_change_password' %}">Change Password</a></li>
-    <li><a href="/edit">Settings</a></li>
-    <li><a href="{% url 'user_list' %}">People</a></li>
+    <a href="/">Dashboard</a>
+   <a href="{% url 'account_email' %}">Change E-mail</a>
+    <a href="{% url 'account_logout' %}">Sign Out</a>
+    <a href="{% url 'account_change_password' %}">Change Password</a>
+    <a href="/edit">Profile</a>
+    <a href="{% url 'user_list' %}">People</a>
+  <a href="/post">posts</a>
     {% else %}
-    <li><a href="{% url 'account_login' %}">Sign In</a></li>
-    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+    <a href="{% url 'account_login' %}">Sign In</a>
+    <a href="{% url 'account_signup' %}">Sign Up</a>
     {% endif %}
-  </ul>
 </div>
 
 {% block content %}
