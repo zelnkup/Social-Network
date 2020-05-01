@@ -4,9 +4,13 @@
 <h1>{{ post.title }}</h1>
 <p class="date">
 {{ post.publish }}
-  author: <a href="{{ post.author.get_absolute_url }}" class="title">
-        {{ post.author }}
+  author: <a href="{{ post.user.get_absolute_url }}" class="title">
+        {{ post.user }}
       </a>
 </p>
 {{ post.body|linebreaks }}
+{{post.publish__year}}
+<br>
+<a href="/delete{{ post.get_absolute_url }}">delete</a>
+
 {% endblock %}

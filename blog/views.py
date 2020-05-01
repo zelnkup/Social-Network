@@ -44,7 +44,7 @@ def user_list(request):
 @login_required
 def user_detail(request, username):
 	user = get_object_or_404(User, username=username, is_active=True)
-	posts = Post.published.filter(author=user)
+	posts = Post.published.filter(user=user)
 	# posts = Post.published.all()
 	return render(request, 'user/detail.html', {'user': user,
 												'posts': posts})

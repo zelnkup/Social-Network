@@ -63,13 +63,16 @@
 
 <div class="topnav">
     {% if user.is_authenticated %}
-    <a href="/">Dashboard</a>
+    <a href="/">Posts</a>
    <a href="{% url 'account_email' %}">Change E-mail</a>
     <a href="{% url 'account_logout' %}">Sign Out</a>
     <a href="{% url 'account_change_password' %}">Change Password</a>
-    <a href="/edit">Profile</a>
+    <a href="/edit">Settings</a>
     <a href="{% url 'user_list' %}">People</a>
-  <a href="/post">posts</a>
+    <a href="/post/new">Add new post</a>
+  <a href="{{ request.user.get_absolute_url }}" class="title">
+        My profile
+      </a>
     {% else %}
     <a href="{% url 'account_login' %}">Sign In</a>
     <a href="{% url 'account_signup' %}">Sign Up</a>

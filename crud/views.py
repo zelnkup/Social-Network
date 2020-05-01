@@ -1,9 +1,9 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
-from .forms import PostCreate
-from django.db.models import F
+from django.views.generic import ListView, DeleteView
+from django.utils.text import slugify
 
+from .forms import PostForm
 from .models import Post
 
 
@@ -13,33 +13,10 @@ class PostListView(ListView):
 	paginate_by = 3
 	template_name = 'crud/list.html'
 
-# class UserPostListView(ListView):
-# 	queryset = Post.objects.filter(author=F('title'))
-# 	context_object_name = 'userposts'
-# 	paginate_by = 3
-# 	template_name = 'user/detail.html'
 
-# def post_list(request):
-# 	object_list = Post.published.all()
-# 	paginator = Paginator(object_list, 3)  # 3 posts in each page
-# 	page = request.GET.get('page')
-# 	try:
-# 		posts = paginator.page(page)
-# 	except PageNotAnInteger:
-# 		# If page is not an integer deliver the first page
-# 		posts = paginator.page(1)
-# 	except EmptyPage:
-# 		# If page is out of range deliver last page of results
-# 		posts = paginator.page(paginator.num_pages)
-# 	return render(request, 'blog/list.html',
-# 				  {
-# 					  'posts': posts,
-# 					  'page': page,
-# 				  })
-
-
-def post_detail(request, year, month, day, post):
-	post = get_object_or_404(Post, slug=post,
+@login_required
+def post_detail(request, year, month, day, slug,token):
+	post = get_object_or_404(Post, slug=slug, token=token,
 							 status='published',
 							 publish__year=year,
 							 publish__month=month,
@@ -48,4 +25,23 @@ def post_detail(request, year, month, day, post):
 				  {
 					  'post': post
 				  })
+
+
+@login_required
+def create_view(request):
+	# add the dictionary during initialization
+	if request.method == "POST":
+		form = PostForm(request.POST)
+		if form.is_valid():
+			form.save(commit=False)
+			form.instance.user = request.user
+			value = form.instance.title
+			form.instance.slug = slugify(value, allow_unicode=True)
+			form.save()
+			return redirect('/')
+	else:
+		form = PostForm()
+
+	return render(request, "create_view.html", {'form': form})
+
 
