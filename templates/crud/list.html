@@ -13,9 +13,9 @@
   <p class="date">
     Published {{ post.publish }} by <a href="{{ post.user.get_absolute_url }}" class="title">
         {{ post.user }}
-      </a>
-    <img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" alt=""
-           style="width: 50px;height:50px;">
+
+    <img src="{% if user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% endif %}" alt=""
+           style="width: 50px;height:50px;"></a>
   </p>
   {{ post.body|truncatewords:30|linebreaks }}
 </div>

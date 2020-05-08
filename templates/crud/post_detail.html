@@ -11,6 +11,28 @@
 {{ post.body|linebreaks }}
 {{post.publish__year}}
 <br>
-<a href="/delete{{ post.get_absolute_url }}">delete</a>
+{% if request.user != post.user %}
+{% else %}
+<a href="{% url 'blog:delete_post' token=post.token %}">delet</a>
+{% endif %}
+<form method="POST">
+
+  <!-- Security token -->
+
+  {% csrf_token %}
+  <!-- Using the formset -->
+  {{ form }}
+
+  <input type="submit" value="Submit">
+</form>
+{% for comment in comments %}
+{{  comment.user }}
+<br>
+{{ comment.content }}
+<br>
+{{  comment.created_at }}
+<br>
+<hr>
+{% endfor %}
 
 {% endblock %}

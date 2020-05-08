@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DeleteView
 from django.utils.text import slugify
+from django.views.generic import ListView
+from django.contrib import messages
 
-from .forms import PostForm
-from .models import Post
+from .forms import PostForm, CommentForm
+from .models import Post,Comment
 
 
 class PostListView(ListView):
@@ -15,15 +16,29 @@ class PostListView(ListView):
 
 
 @login_required
-def post_detail(request, year, month, day, slug,token):
+def post_detail(request, year, month, day, slug, token):
 	post = get_object_or_404(Post, slug=slug, token=token,
 							 status='published',
 							 publish__year=year,
 							 publish__month=month,
 							 publish__day=day)
+	if request.method == "POST":
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			form.save(commit=False)
+			form.instance.post = post
+			form.instance.user = request.user
+			form.save()
+			messages.success(request, 'Comment added')
+	else:
+		form = CommentForm()
+	comments=Comment.objects.filter(post = post).order_by('-created_at')
+
 	return render(request, 'crud/post_detail.html',
 				  {
-					  'post': post
+					  'post': post,
+					  'form': form,
+					  'comments':comments,
 				  })
 
 
@@ -45,3 +60,10 @@ def create_view(request):
 	return render(request, "create_view.html", {'form': form})
 
 
+@login_required
+def delete_view(request, token):
+	post = Post.objects.get(token=token)
+	if request.user == post.user:
+		post.delete()
+
+	return redirect('/')

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 
 from .forms import UserEditForm, ProfileEditForm
@@ -23,6 +23,7 @@ def edit(request):
 			user_form.save()
 			profile_form.save()
 			messages.success(request, 'Profile updated successfully')
+			return redirect('/')
 		else:
 			messages.error(request, 'Error updating your profile')
 	else:
@@ -31,7 +32,7 @@ def edit(request):
 	return render(request,
 				  'blog/edit.html',
 				  {'user_form': user_form,
-				   'profile_form': profile_form})
+				   'profile_form': profile_form,})
 
 
 @login_required
@@ -49,29 +50,3 @@ def user_detail(request, username):
 	return render(request, 'user/detail.html', {'user': user,
 												'posts': posts})
 
-# @login_required
-# def create_view(request):
-# 	# add the dictionary during initialization
-# 	if request.method == "POST":
-# 		form = GeeksForm(request.POST)
-# 		if form.is_valid():
-# 			post = form.save(commit=False)
-# 			post.user = request.user
-# 			post.save()
-# 			return redirect('/')
-# 	else:
-# 		form = GeeksForm()
-#
-# 	return render(request, "create_view.html", {'form': form})
-
-
-# @login_required
-# def post_list(request):
-# 	posts = GeeksModel.objects.all()
-# 	return render(request, 'post_list.html', {'posts': posts})
-#
-#
-# @login_required
-# def post_detail(request, id, slug):
-# 	post = get_object_or_404(GeeksModel, id=id, slug=slug)
-# 	return render(request, 'post_detail.html', {'post': post})

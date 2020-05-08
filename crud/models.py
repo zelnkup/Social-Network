@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 import random
 
 from django.contrib.auth.models import User
@@ -55,3 +54,16 @@ class Post(models.Model):
 							 self.publish.day,
 							 self.slug,
 							 self.token])
+
+
+class Comment(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE)
+	content = models.TextField(max_length=255)
+	created_at = models.DateField(auto_now_add=True)
+
+	class Meta:
+		ordering = ('-created_at',)
+
+	def __str__(self):
+		return self.content

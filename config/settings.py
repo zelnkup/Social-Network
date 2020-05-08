@@ -22,8 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t'
 
+
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
@@ -150,5 +154,7 @@ ABSOLUTE_URL_OVERRIDES = {
 'auth.user': lambda u: reverse_lazy('user_detail',
 args=[u.username])
 }
+
+APPEND_SLASH=False
 
 
