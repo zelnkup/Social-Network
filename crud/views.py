@@ -9,9 +9,9 @@ from .models import Post,Comment
 
 
 class PostListView(ListView):
-	queryset = Post.published.all()
+	queryset = Post.published.all().order_by('-created')
 	context_object_name = 'posts'
-	paginate_by = 3
+	paginate_by = 6
 	template_name = 'crud/list.html'
 
 
@@ -46,14 +46,17 @@ def post_detail(request, year, month, day, slug, token):
 def create_view(request):
 	# add the dictionary during initialization
 	if request.method == "POST":
-		form = PostForm(request.POST)
+		form = PostForm(data=request.POST, files=request.FILES)
 		if form.is_valid():
 			form.save(commit=False)
 			form.instance.user = request.user
 			value = form.instance.title
 			form.instance.slug = slugify(value, allow_unicode=True)
 			form.save()
+			messages.success(request, 'Post added')
 			return redirect('/')
+		else:
+			messages.error(request, 'Error adding your post')
 	else:
 		form = PostForm()
 

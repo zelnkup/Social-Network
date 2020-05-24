@@ -1,22 +1,31 @@
 {% extends "base.html" %}
 {% block title %}{{ user.username }}{% endblock %}
-{% block content %}
-name:<h1>{{ user.get_full_name }}</h1>
-<br>
-username:{{ user.username }}
-<br>
-photo:
-<br>
-<img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" alt="" style="width: 300px;height:300px;">
-<br>
-<h3>{{ user.username }}'s posts</h3>
-<br>
-{% for post in posts %}
-<a href="{{ post.get_absolute_url }}">
-      {{ post.title }}
-    </a>
-<br>
-{{ post.body|truncatewords:30|linebreaks }}
-<hr>
-{% endfor %}
+{% block posts %}
+<!--name:<h1>{{ user.get_full_name }}</h1>-->
+<!--<br>-->
+<!--username:{{ user.username }}-->
+<!--<br>-->
+<!--photo:-->
+<!--<br>-->
+<!--<img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" alt="" style="width: 300px;height:300px;">-->
+<!--<br>-->
+<!--<h3>{{ user.username }}'s posts</h3>-->
+<!--<br>-->
+<!--{% for post in posts %}-->
+<!--<a href="{{ post.get_absolute_url }}">-->
+<!--      {{ post.title }}-->
+<!--    </a>-->
+<!--<br>-->
+<!--{{ post.body|truncatewords:30|linebreaks }}-->
+<!--<hr>-->
+<!--{% endfor %}-->
+<div class="about-author d-flex p-4 bg-light">
+		              <div class="blog-entry ftco-animate d-md-flex">
+		                <img src="{% if user.profile.photo %}{{user.profile.photo.url}}{% else %}{% endif %}" style="" alt="Image placeholder" class="img img-2">
+		              </div>
+		              <div class="desc">
+		                <h3>{{ user.get_full_name }}</h3>
+<!--		                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>-->
+		              </div>
+		            </div>
 {% endblock %}

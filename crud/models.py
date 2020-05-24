@@ -29,9 +29,10 @@ class Post(models.Model):
 		('published', 'Published'),
 	)
 	title = models.CharField(max_length=250)
-	slug = models.SlugField(max_length=250, unique_for_date='publish')
+	slug = models.SlugField(max_length=250)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, unique=False)
 	body = models.TextField()
+	preview = models.ImageField(upload_to='images', blank=True)
 	token = models.CharField(max_length=10, default=gen_token, unique=True)
 	publish = models.DateTimeField(default=timezone.now)
 	created = models.DateTimeField(auto_now_add=True)

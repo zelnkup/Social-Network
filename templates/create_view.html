@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
+
 {%block title%}Add new post{% endblock %}
-{% block content %}
+{% block posts %}
+<h1>Write your post</h1>
 <form method="POST" enctype="multipart/form-data">
 
   <!-- Security token -->
 
   {% csrf_token %}
   <!-- Using the formset -->
-  {{ form.as_p }}
+  {{form.as_p}}
 
   <input type="submit" value="Submit">
 </form>

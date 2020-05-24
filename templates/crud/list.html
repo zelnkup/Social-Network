@@ -1,28 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Social Network{% endblock %}
-{% block content %}
+
+{% block posts %}
+
+
+<!--<div class="col-sm-12" style="text-align: center;">-->
+<!--    <hr>-->
+<!--    <div style="text-align: left;">-->
+<!--        <h2>{{post.title}}</h2>-->
+
+<!--        <h5><span class="glyphicon glyphicon-time"></span> Post by <a href="{{ post.user.get_absolute_url }}"><img-->
+<!--                src="{% if user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% endif %}" alt=""-->
+<!--                style="width: 50px;height:50px; border-radius: 50%; border: solid black 2px;">{{post.user}}</a>,-->
+<!--            {{post.publish|date:"d,M,Y"}}</h5>-->
+<!--    </div>-->
+<!--    <br>-->
+<!--    <p>{{ post.body|truncatewords:50|linebreaks }}</p>-->
+<!--    <br>-->
+
+<!--    <a href="{{ post.get_absolute_url }}">Read more</a>-->
+<!--</div>-->
+
+<!--<div style="text-align:center;">-->
+<!--    {% include "pagination.html" with page=page_obj %}-->
+<!--</div>-->
 {% for post in posts %}
-<div style="text-align:center;">
-  <h2>
-    <a href="{{ post.get_absolute_url }}">
-      {{ post.title }}
-    </a>
-    <br>
+<div class="col-md-12">
+    <div class="blog-entry ftco-animate d-md-flex">
+        {% if post.preview %}
+        <img src="{{post.preview.url}}" class="img img-2" alt="">{% else %}
+        <a href="{{ post.get_absolute_url }}" class="img img-2"
+           style="background-image: url({% static 'images/image_1.jpg' %});"></a>
+        {% endif %}
 
-  </h2>
-  <p class="date">
-    Published {{ post.publish }} by <a href="{{ post.user.get_absolute_url }}" class="title">
-        {{ post.user }}
-
-    <img src="{% if user.profile.photo %}{{post.user.profile.photo.url}}{% else %}{% endif %}" alt=""
-           style="width: 50px;height:50px;"></a>
-  </p>
-  {{ post.body|truncatewords:30|linebreaks }}
+        <div class="text text-2 pl-md-4">
+            <h3 class="mb-2"><a href="{{ post.get_absolute_url }}">{{post.title}}</a>
+            </h3>
+            <div class="meta-wrap">
+                <p class="meta">
+                    <span><i class="icon-calendar mr-2"></i>{{post.publish|date:"d,M,Y"}}</span>
+                    <span><a href="{{ post.user.get_absolute_url }}"><i
+                            class="fas fa-user"></i><span></span>{{post.user}}</a></span>
+                    <span><i class="icon-comment2 mr-2"></i>5 Comment</span>
+                </p>
+            </div>
+            <p class="mb-4">{{ post.body|truncatewords:40|linebreaks }}</p>
+            <p><a href="{{ post.get_absolute_url }}" class="btn-custom">Read More <span
+                    class="ion-ios-arrow-forward"></span></a></p>
+        </div>
+    </div>
 </div>
-<hr>
-
 {% endfor %}
-<div style="text-align:center;">
-{% include "pagination.html" with page=page_obj %}
+<div class="blog-entry ftco-animate d-md-flex"  >
+    {% include "pagination.html" with page=page_obj %}
 </div>
 {% endblock %}
