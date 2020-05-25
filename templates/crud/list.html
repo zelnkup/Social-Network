@@ -25,24 +25,26 @@
 <!--<div style="text-align:center;">-->
 <!--    {% include "pagination.html" with page=page_obj %}-->
 <!--</div>-->
-{% for post in posts %}
+<h3>Articles</h3>
+{% for post in posts.all_posts %}
 <div class="col-md-12">
     <div class="blog-entry ftco-animate d-md-flex">
-        {% if post.preview %}
-        <img src="{{post.preview.url}}" class="img img-2" alt="">{% else %}
-        <a href="{{ post.get_absolute_url }}" class="img img-2"
-           style="background-image: url({% static 'images/image_1.jpg' %});"></a>
-        {% endif %}
+
+        <a href="{{ post.get_absolute_url }}">
+            <img src="{% if post.preview %}{{post.preview.url}}{% else %}{% static 'images/image_1.jpg' %}{% endif %}"
+                 class="img img-2" alt="">
+        </a>
+
 
         <div class="text text-2 pl-md-4">
-            <h3 class="mb-2"><a href="{{ post.get_absolute_url }}">{{post.title}}</a>
+            <h3 class="mb-2"><a href="{{ post.get_absolute_url }}">{{post.title | truncatewords:8|linebreaks}}</a>
             </h3>
             <div class="meta-wrap">
                 <p class="meta">
                     <span><i class="icon-calendar mr-2"></i>{{post.publish|date:"d,M,Y"}}</span>
                     <span><a href="{{ post.user.get_absolute_url }}"><i
                             class="fas fa-user"></i><span></span>{{post.user}}</a></span>
-                    <span><i class="icon-comment2 mr-2"></i>5 Comment</span>
+                    <span><i class="fas fa-eye"></i> {{post.views}} views</span>
                 </p>
             </div>
             <p class="mb-4">{{ post.body|truncatewords:40|linebreaks }}</p>
@@ -52,7 +54,29 @@
     </div>
 </div>
 {% endfor %}
-<div class="blog-entry ftco-animate d-md-flex"  >
+<div class="blog-entry ftco-animate d-md-flex">
     {% include "pagination.html" with page=page_obj %}
 </div>
 {% endblock %}
+{% block popular %}
+{% for popular in posts.popular_posts %}
+<div class="block-21 mb-4 d-flex">
+
+    <a href="{{ popular.get_absolute_url }}">
+        <img src="{% if popular.preview %}{{popular.preview.url}}{% else %}{% static 'images/image_1.jpg' %}{% endif %}"
+             class="blog-img mr-4" alt="">
+    </a>
+    <div class="text">
+        <h3 class="heading"><a href="{{ popular.get_absolute_url }}">{{popular.title | truncatewords:8|linebreaks}}</a>
+        </h3>
+        <div class="meta">
+            <div><span class="icon-calendar"></span> {{popular.publish|date:"d,M,Y"}}</div>
+            <div><a href="{{ popular.user.get_absolute_url }}"><span class="icon-person"></span><b> {{popular.user }}</b></a></div>
+            <div><span><i class="fas fa-eye"></i> {{popular.views}} views</span></div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+

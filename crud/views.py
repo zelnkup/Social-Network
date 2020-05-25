@@ -1,18 +1,30 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.text import slugify
 from django.views.generic import ListView
-from django.contrib import messages
 
 from .forms import PostForm, CommentForm
-from .models import Post,Comment
+from .models import Post, Comment
+from django.core.paginator import Paginator
 
 
 class PostListView(ListView):
-	queryset = Post.published.all().order_by('-created')
+	model = Post
 	context_object_name = 'posts'
-	paginate_by = 6
 	template_name = 'crud/list.html'
+
+	def get_queryset(self):
+		queryset = {'all_posts': Post.published.all().order_by('-created'),
+					'popular_posts': Post.published.all().order_by('-views')[:5]}
+		return queryset
+
+
+# class PopularPostListView(ListView):
+# 	queryset = Post.published.all().order_by('views')
+# 	context_object_name = 'popular_posts'
+# 	template_name = 'crud/list.html'
 
 
 @login_required
@@ -22,6 +34,8 @@ def post_detail(request, year, month, day, slug, token):
 							 publish__year=year,
 							 publish__month=month,
 							 publish__day=day)
+	post.views += 1
+	post.save()
 	if request.method == "POST":
 		form = CommentForm(request.POST)
 		if form.is_valid():
@@ -29,16 +43,17 @@ def post_detail(request, year, month, day, slug, token):
 			form.instance.post = post
 			form.instance.user = request.user
 			form.save()
+			form = CommentForm()
 			messages.success(request, 'Comment added')
 	else:
 		form = CommentForm()
-	comments=Comment.objects.filter(post = post).order_by('-created_at')
+	comments = Comment.objects.filter(post=post).order_by('-created_at')
 
 	return render(request, 'crud/post_detail.html',
 				  {
 					  'post': post,
 					  'form': form,
-					  'comments':comments,
+					  'comments': comments,
 				  })
 
 
