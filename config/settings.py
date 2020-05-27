@@ -46,6 +46,8 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'bootstrap4',
 
     'blog',
@@ -136,6 +138,9 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'blog.forms.SignupForm'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_ADAPTER = 'blog.forms.CustomSocialAccountAdapter'
+
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -155,6 +160,16 @@ from django.urls import reverse_lazy
 ABSOLUTE_URL_OVERRIDES = {
 'auth.user': lambda u: reverse_lazy('user_detail',args=[u.username])}
 
-APPEND_SLASH=False
 
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

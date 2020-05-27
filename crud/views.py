@@ -10,23 +10,12 @@ from .models import Post, Comment
 from django.core.paginator import Paginator
 
 
-class PostListView(ListView):
-	model = Post
-	context_object_name = 'posts'
-	template_name = 'crud/list.html'
-
-	def get_queryset(self):
-		queryset = {'all_posts': Post.published.all().order_by('-created'),
-					'popular_posts': Post.published.all().order_by('-views')[:5]}
-		return queryset
-
-
-# class PopularPostListView(ListView):
-# 	queryset = Post.published.all().order_by('views')
-# 	context_object_name = 'popular_posts'
-# 	template_name = 'crud/list.html'
-
-
+@login_required
+def post_list(request):
+	popular_posts = Post.published.all().order_by('-views')[:5]
+	posts = Post.published.all().order_by('-created')
+	return render(request, 'base.html', {'popular_posts':popular_posts,
+										 'posts':posts})
 @login_required
 def post_detail(request, year, month, day, slug, token):
 	post = get_object_or_404(Post, slug=slug, token=token,
@@ -48,18 +37,20 @@ def post_detail(request, year, month, day, slug, token):
 	else:
 		form = CommentForm()
 	comments = Comment.objects.filter(post=post).order_by('-created_at')
-
+	popular_posts = Post.published.all().order_by('-views')[:5]
 	return render(request, 'crud/post_detail.html',
 				  {
 					  'post': post,
 					  'form': form,
 					  'comments': comments,
+					  'popular_posts':popular_posts
 				  })
 
 
 @login_required
 def create_view(request):
 	# add the dictionary during initialization
+	popular_posts = Post.published.all().order_by('-views')[:5]
 	if request.method == "POST":
 		form = PostForm(data=request.POST, files=request.FILES)
 		if form.is_valid():
@@ -75,7 +66,7 @@ def create_view(request):
 	else:
 		form = PostForm()
 
-	return render(request, "create_view.html", {'form': form})
+	return render(request, "create_view.html", {'form': form,'popular_posts':popular_posts})
 
 
 @login_required
