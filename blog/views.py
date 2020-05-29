@@ -37,7 +37,7 @@ def edit(request):
 				   })
 
 
-@login_required
+
 def user_list(request):
 	users = User.objects.filter(is_active=True)
 	popular_posts = Post.published.all().order_by('-views')[:5]
@@ -46,7 +46,7 @@ def user_list(request):
 											  })
 
 
-@login_required
+
 def user_detail(request, username):
 	user = get_object_or_404(User, username=username, is_active=True)
 	posts = Post.published.filter(user=user)

@@ -4,19 +4,37 @@ from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.text import slugify
 from django.views.generic import ListView
+from django.core.paginator import Paginator
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
+from django.db.models import Q
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment
 from django.core.paginator import Paginator
 
 
-@login_required
+
 def post_list(request):
-	popular_posts = Post.published.all().order_by('-views')[:5]
+
 	posts = Post.published.all().order_by('-created')
+
+	popular_posts = Post.published.all().order_by('-views')[:5]
+
+
+
+	page = request.GET.get('page', 1)
+	paginator = Paginator(posts, 6)
+	try:
+		posts = paginator.page(page)
+	except PageNotAnInteger:
+		posts = paginator.page(1)
+	except EmptyPage:
+		posts = paginator.page(paginator.num_pages)
+
 	return render(request, 'base.html', {'popular_posts':popular_posts,
 										 'posts':posts})
-@login_required
+
 def post_detail(request, year, month, day, slug, token):
 	post = get_object_or_404(Post, slug=slug, token=token,
 							 status='published',

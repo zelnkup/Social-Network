@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends 'base.html' %}
 {% block title %}{{ user.username }}{% endblock %}
+
 {% block posts %}
 <div class="about-author d-flex p-4 bg-light">
     <div class="blog-entry ftco-animate d-md-flex">
@@ -13,24 +13,5 @@
 </div>
 {% endblock %}
 {% block popular %}
-<h3 class="sidebar-heading">Popular Articles</h3>
-{% for popular in popular_posts %}
-<div class="block-21 mb-4 d-flex">
 
-    <a href="{{ popular.get_absolute_url }}">
-        <img src="{% if popular.preview %}{{popular.preview.url}}{% else %}{% static 'images/image_1.jpg' %}{% endif %}"
-             class="blog-img mr-4" alt="">
-    </a>
-    <div class="text">
-        <h3 class="heading"><a href="{{ popular.get_absolute_url }}">{{ popular.title | truncatewords:8 | linebreaks}}</a>
-        </h3>
-        <div class="meta">
-            <div><span class="icon-calendar"></span> {{popular.publish|date:"d,M,Y"}}</div>
-            <div><a href="{{ popular.user.get_absolute_url }}"><span
-                    class="icon-person"></span><b> {{popular.user }}</b></a></div>
-            <div><span><i class="fas fa-eye"></i> {{popular.views}} views</span></div>
-        </div>
-    </div>
-</div>
-{% endfor %}
 {% endblock %}
