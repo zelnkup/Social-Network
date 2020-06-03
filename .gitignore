@@ -1,6 +1,6 @@
 *.pyc
 __pycache__
 venv
-
+local_settings.py
 db.sqlite3
 .elasticbeanstalk
