@@ -26,10 +26,10 @@ SECRET_KEY = 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t'
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
-ALLOWED_HOSTS = ['zelnkup.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['zelnkup.pythonanywhere.com', '127.0.0.1', 'illia.herokuapp.com']
 
 
 # Application definition
