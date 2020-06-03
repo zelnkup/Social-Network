@@ -26,7 +26,7 @@ SECRET_KEY = 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t'
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['zelnkup.pythonanywhere.com', '127.0.0.1']
@@ -62,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
