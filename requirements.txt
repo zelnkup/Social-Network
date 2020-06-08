@@ -1,4 +1,21 @@
+<<<<<<< HEAD
 Django==2.2.10
+=======
+attrs==19.3.0
+awsebcli==3.18.1
+bcrypt==3.1.7
+blessed==1.17.5
+botocore==1.15.49
+cached-property==1.5.1
+cement==2.8.2
+certifi==2020.4.5.1
+cffi==1.14.0
+chardet==3.0.4
+colorama==0.4.3
+cryptography==2.9.2
+defusedxml==0.6.0
+Django==2.2.13
+>>>>>>> 90f647dadc337759c4216064d544b04088c4872b
 django-allauth==0.41.0
 django-bootstrap4==1.1.1
 gunicorn==20.0.4
