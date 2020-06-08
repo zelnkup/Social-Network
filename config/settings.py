@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from django.urls import reverse_lazy
 import os
 
-import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,10 +28,11 @@ SECRET_KEY = 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t'
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mbc%aziav3crrn&_jrms(nn*sxsszwups9(i7hq20hd14k7h@t')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
-ALLOWED_HOSTS = ['zelnkup.pythonanywhere.com', '127.0.0.1', 'illia.herokuapp.com']
+ALLOWED_HOSTS = ['zelnkup.pythonanywhere.com',
+                 '127.0.0.1', 'illia.herokuapp.com']
 
 
 # Application definition
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'bootstrap4',
+    'django_summernote',
 
     'blog',
     'crud',
@@ -93,17 +95,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangogirls',
-        'USER': 'name',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -151,7 +147,6 @@ LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_ADAPTER = 'blog.forms.CustomSocialAccountAdapter'
 
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
@@ -165,11 +160,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 SITE_ID = 1
 
-from django.urls import reverse_lazy
 
 ABSOLUTE_URL_OVERRIDES = {
-'auth.user': lambda u: reverse_lazy('user_detail',args=[u.username])}
-
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])}
 
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -181,5 +174,17 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': {
             'access_type': 'online',
         }
+    }
+}
+
+SUMMERNOTE_CONFIG = {
+    # You can put custom Summernote settings
+    'summernote': {
+        # As an example, using Summernote Air-mode
+        'airMode': False,
+
+        # Change editor size
+        'width': '170%',
+        'height': '500px',
     }
 }

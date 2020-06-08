@@ -39,6 +39,7 @@
 
 
 
+
     </style>
 </head>
 <body>
@@ -100,21 +101,33 @@
                             <h1 class="mb-3">{{ post.title }}</h1>
                             {% if request.user != post.user %}
                             {% else %}
-                            <div style="text-align:right" title="Delete">
-                                <a class="delet-link" href="{% url 'blog:delete_post' token=post.token %}"><i
+                            <div style="text-align:right; font-size:20px;" >
+                                <a title="Delete" class="delet-link" href="{% url 'blog:delete_post' token=post.token %}"><i
                                         class="fas fa-trash"></i>
+                                </a>
+                                <a title="Edit" class="delet-link" href="{% url 'blog:post-update'  slug=post.slug %}">
+                                    <i class="fas fa-edit"></i>
+
                                 </a>
                             </div>
 
                             {% endif %}
                             <div class="meta-wrap">
-                                            <p class="meta">
+                                <p>
+                                <span><a class="delet-link" href="{{ post.user.get_absolute_url }}"><i
+                                                        class="fas fa-user"></i><span></span> {{post.user}}</a></span></p>
+                                <p class="meta">
                             <span><i
-                                                        class="icon-calendar mr-2"></i>{{post.publish}}</span>
-                                            </p>
+                                    class="icon-calendar mr-2"></i>{{post.publish}}</span>
+                                </p>
+                                <p>
+                                    <span><i class="fas fa-eye"></i> {{post.views}} views</span>
+                                </p>
+
+
                             </div>
                             <div>
-                                <p>{{ post.body }}</p>
+                                <p>{{ post.body | safe }}</p>
                             </div>
                             <div class="pt-5 mt-5">
                                 <h3 class="mb-5 font-weight-bold">{{ comments |length}} Comments</h3>
@@ -123,16 +136,18 @@
                                     <li class="comment">
                                         <div class="vcard bio">
                                             <a href="{{ comment.user.get_absolute_url }}">
-                                            <img src="{% if comment.user.profile.photo %}{{comment.user.profile.photo.url}}{% else %}{% endif %}"
-                                                 alt="Image placeholder"></a>
+                                                <img src="{% if comment.user.profile.photo %}{{comment.user.profile.photo.url}}{% else %}{% endif %}"
+                                                     alt="Image placeholder"></a>
                                         </div>
 
 
                                         <div class="comment-body">
-                                            <a href="{{ comment.user.get_absolute_url }}"><h3>{{ comment.user }}</h3></a>
+                                            <a href="{{ comment.user.get_absolute_url }}"><h3>{{ comment.user }}</h3>
+                                            </a>
 
                                             <div class="meta"><i
-                                                        class="icon-calendar mr-2"></i>{{ comment.created_at }}</div>
+                                                    class="icon-calendar mr-2"></i>{{ comment.created_at }}
+                                            </div>
                                             <hr>
                                             <p>{{ comment.content }}</p>
 
@@ -173,7 +188,7 @@
                                     </form>
                                     {% else %}
                                     <p>To leave comments You have to <a href="/accounts/login">sign in</a> first</p>
-{% endif %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div><!-- END-->
@@ -181,7 +196,12 @@
                     {% endblock %}
                     <div class="col-lg-4 sidebar ftco-animate bg-light pt-5">
                         <div class="sidebar-box pt-md-4">
-                            <p>Welcome, {{ request.user }}</p>
+                            {% if request.user.is_authenticated %}
+                            <p>Welcome, {{ request.user.username}}</p>
+                            {% else %}
+                            <p>To create posts and fill your profile You have to <a href="/accounts/login">sign in</a>
+                                at first</p>
+                            {% endif %}
                             <form action="#" class="search-form">
                                 <div class="form-group">
                                     <span class="icon icon-search"></span>
@@ -189,7 +209,6 @@
                                 </div>
                             </form>
                         </div>
-
 
 
                         <div class="sidebar-box ftco-animate">
@@ -210,7 +229,9 @@
                                         <div><a href="{{ popular.user.get_absolute_url }}"><span
                                                 class="icon-person"></span><b> {{popular.user }}</b></a></div>
                                         <div><span><i class="fas fa-eye"></i> {{popular.views}} views</span></div>
-                                        <div><span><i class="icon-comment2 mr-2"></i>{{popular.commented_post.count}}</span></div>
+                                        <div><span><i
+                                                class="icon-comment2 mr-2"></i>{{popular.commented_post.count}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -219,17 +240,12 @@
                         </div>
 
 
-
-
-
-
-
-
                         <div class="sidebar-box ftco-animate">
                             <h3 class="sidebar-heading">Creator</h3>
                             <p>For any information contact with me</p>
                             <p>i.stebelskuy@gmail.com</p>
-                            <a target="_blank" href="https://t.me/zelnkup"><i style="font-size:40px;" class="fab fa-telegram"></i></a>
+                            <a target="_blank" href="https://t.me/zelnkup"><i style="font-size:40px;"
+                                                                              class="fab fa-telegram"></i></a>
                         </div>
                     </div><!-- END COL -->
                 </div>

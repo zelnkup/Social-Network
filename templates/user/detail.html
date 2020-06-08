@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block posts %}
@@ -11,7 +12,35 @@
         <h3>{{ user.get_full_name }}</h3>
     </div>
 </div>
-{% endblock %}
-{% block popular %}
+<div class="blog-entry ftco-animate d-md-flex">
+    <h2>{{ user.username }}'s articles:</h2>
+</div>
+{% for post in posts %}
+<div class="blog-entry ftco-animate d-md-flex">
 
+    <div class="bio mr-5">
+        <a href="{{ post.get_absolute_url }}">
+            <img src="{% if post.preview %}{{post.preview.url}}{% else %}{% static 'images/image_1.jpg' %}{% endif %}"
+                 class="img img-2" alt="">
+        </a>
+    </div>
+    <div class="desc">
+        <a href="{{ post.get_absolute_url }}">
+            <h3>{{ post.title |truncatewords:8 }}</h3>
+        </a>
+        <div class="meta-wrap">
+            <p class="meta">
+                                                <span><i
+                                                        class="icon-calendar mr-2"></i>{{post.publish|date:"d,M,Y"}} </span>
+
+                <span><i class="fas fa-eye"></i> {{post.views}} views</span>
+                <span><i class="icon-comment2 mr-2"></i>{{post.commented_post.count}}</span>
+            </p>
+        </div>
+        <p>{{ post.body | truncatewords:50 }}</p>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
+
+

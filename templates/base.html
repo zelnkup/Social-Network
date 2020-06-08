@@ -81,6 +81,7 @@
                 All rights reserved
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
         </div>
+        
     </aside> <!-- END COLORLIB-ASIDE -->
     <div id="colorlib-main">
         <section class="ftco-section ftco-no-pt ftco-no-pb">
@@ -116,7 +117,7 @@
                                                 <span><i class="icon-comment2 mr-2"></i>{{post.commented_post.count}}</span>
                                             </p>
                                         </div>
-                                        <p class="mb-4">{{ post.body|truncatewords:40|linebreaks }}</p>
+                                        <p class="mb-4">{{ post.body | safe |truncatewords:40|linebreaks }}</p>
                                         <p><a href="{{ post.get_absolute_url }}" class="btn-custom">Read More <span
                                                 class="ion-ios-arrow-forward"></span></a></p>
                                     </div>
