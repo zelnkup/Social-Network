@@ -37,7 +37,7 @@
                 <span><i class="icon-comment2 mr-2"></i>{{post.commented_post.count}}</span>
             </p>
         </div>
-        <p>{{ post.body | truncatewords:50 }}</p>
+        <p>{{ post.body | truncatewords:50 | safe }}</p>
     </div>
 </div>
 {% endfor %}
